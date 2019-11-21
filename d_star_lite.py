@@ -5,6 +5,8 @@ import math
 import matplotlib.pyplot as plt
 import heapq
 
+from pprint import pprint
+
 class Node(object):
     def __init__(self, x, y, cost):
         self.x = x
@@ -85,11 +87,11 @@ class DStarLite(object):
 
     def get_successors(self, state):
         successors = []
-        for i in range(8):
-            n = Node(state.x + 1, state.y + 1, 0)
-            n.cost = math.sqrt((n.x - state.x)**2 + (n.y - state.y)**2)
-            if self.verify_node(state):
-                pass
+        for m in self.motion:
+            n = Node(state.x + m[0], state.y + m[1], math.sqrt(m[0]**2 + m[1]**2))
+            if self.verify_node(n):
+                successors.append(n)
+        return successors
 
     def get_top_key(self, u):
         pass
@@ -197,7 +199,9 @@ if __name__=='__main__':
     xwidth = round((max(ox) - min(ox)) / resolution)
     ywidth = round((max(oy) - min(oy)) / resolution)
 
-    dsl.calc_obstacle_map(ox, oy, 0.1, 0.3)
+    dsl.calc_obstacle_map(ox, oy, 1, 0.3)
+
+    pprint(dsl.get_successors(dsl.start))
 
     plt.plot(ox, oy, ".k")
     # obstacle_map = [[False for i in range(xwidth)] for j in range(ywidth)]
