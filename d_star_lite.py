@@ -22,6 +22,7 @@ class Node(object):
 class DStarLite(object):
     def __init__(self):
         self.queue = []# U
+        heapq.heapify(self.queue)
         self.successors = []
         self.predecessors = []
         self.motion = [[-1, -1],
@@ -72,7 +73,7 @@ class DStarLite(object):
 
     def compute_shortest_path(self):
         while (self.get_top_key(u) < self.calculate_key(self.goal)) or self.goal.rhs != self.goal.g:
-            u = self.pop(u)
+            u = self.pop()
             if u.g > u.rhs:
                 u.g = u.rhs
                 for s in self.get_successors(u):
@@ -83,7 +84,11 @@ class DStarLite(object):
                     self.update_vertex(u)
 
     def get_min_pred_cost(self, state):
-        pass
+        predecessors = []
+        for m in self.motion:
+            n = Node(state.x + m[0], state.y + m[1], math.sqrt(m[0]**2 + m[1]**2))
+            if self.verify_node(n):
+                predecessors.append(n)
 
     def get_successors(self, state):
         successors = []
@@ -96,8 +101,9 @@ class DStarLite(object):
     def get_top_key(self, u):
         pass
 
-    def pop(self, u):
-        pass
+    def pop(self):
+        u = heapq.heappop(self.queue)
+        return u
 
     def calc_xyindex(self, position, min_pos):
         # from a_star.py
