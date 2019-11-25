@@ -12,8 +12,8 @@ class Node(object):
         self.x = x
         self.y = y
         self.cost = cost
-        self.rhs = 1e6
-        self.g = 1e6
+        self.rhs = math.inf
+        self.g = math.inf
 
     def __repr__(self):
         return "<x: %s, y: %s, cost: %s, rhs: %s, g: %s>" % (self.x, self.y, self.cost, self.rhs, self.g)
@@ -79,7 +79,7 @@ class DStarLite(object):
                 for s in self.get_successors(u):
                     self.update_vertex(u)
             else:
-                u.g = 1e6
+                u.g = math.inf
                 for s in self.get_successors(u):
                     self.update_vertex(u)
 
